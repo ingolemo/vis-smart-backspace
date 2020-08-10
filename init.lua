@@ -70,6 +70,12 @@ local function smart_backspace()
 			selection.pos = pos - deleted_bytes
 		end
 	end
+
+	-- vis doesn't seem to update the syntax highlighting in other splits of
+	-- the same file when we edit the file directly like this.
+	-- a workaround is to send vis a no-op insert command.
+	-- https://github.com/ingolemo/vis-smart-backspace/issues/2
+	vis:insert('')
 end
 
 vis.events.subscribe(vis.events.INIT, function()
