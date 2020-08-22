@@ -1,8 +1,6 @@
 require('vis')
 
-local mod = {
-	tab_width = 8,
-}
+local mod = {tab_width = 8}
 
 local function is_spaces(str)
 	return string.match(str, '^ *$') ~= nil
@@ -35,7 +33,9 @@ end
 
 local function modulus_big(dividend, divisor)
 	local quotient = dividend % divisor
-	if quotient == 0 then return divisor end
+	if quotient == 0 then
+		return divisor
+	end
 	return quotient
 end
 
@@ -52,7 +52,9 @@ local function get_selections(win)
 	end
 
 	-- handle deletions backwards so as not to invalidate indices
-	table.sort(selections, function(a, b) return a.pos > b.pos end)
+	table.sort(selections, function(a, b)
+		return a.pos > b.pos
+	end)
 	return selections
 end
 
