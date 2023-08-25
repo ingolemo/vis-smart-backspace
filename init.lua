@@ -2,6 +2,15 @@ require('vis')
 
 local mod = {tab_width = 8}
 
+-- vis.options.tabwidth is currently only available in the git master
+-- fallback to the old system until this feature is released
+local function get_tab_width()
+	if vis.options and vis.options.tabwidth then
+		return vis.options.tabwidth
+	end
+	return mod.tab_width
+end
+
 local function is_spaces(str)
 	return string.match(str, '^ *$') ~= nil
 end
@@ -62,7 +71,7 @@ local function smart_backspace()
 	for _, selection in ipairs(get_selections(vis.win)) do
 		local length = 1
 		if near_space_indent(selection) then
-			local tab_stop = modulus_big(selection.col - 1, mod.tab_width)
+			local tab_stop = modulus_big(selection.col - 1, get_tab_width())
 			length = math.floor(constrain(tab_stop, 1, selection.col))
 		end
 
