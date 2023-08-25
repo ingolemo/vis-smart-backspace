@@ -11,6 +11,15 @@ local function get_tab_width()
 	return mod.tab_width
 end
 
+-- vis.options.expandtab is currently only available in the git master
+-- fallback to "true" until this feature is released
+local function get_expand_tab()
+	if vis.options then
+		return vis.options.expandtab
+	end
+	return true
+end
+
 local function is_spaces(str)
 	return string.match(str, '^ *$') ~= nil
 end
@@ -70,7 +79,7 @@ end
 local function smart_backspace()
 	for _, selection in ipairs(get_selections(vis.win)) do
 		local length = 1
-		if near_space_indent(selection) then
+		if get_expand_tab() and near_space_indent(selection) then
 			local tab_stop = modulus_big(selection.col - 1, get_tab_width())
 			length = math.floor(constrain(tab_stop, 1, selection.col))
 		end
